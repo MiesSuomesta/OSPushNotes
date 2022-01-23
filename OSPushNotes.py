@@ -14,7 +14,10 @@
 from onesignal import *
 import datetime as dt
 import time as Time
+import sys
+import string
 
+tsADDITION = dt.timedelta(seconds=10)
 
 def get_current_time():
     return dt.datetime.now()
@@ -25,16 +28,24 @@ MY_REST_API_KEY = "MWFiZWE5ZGYtZGEyNy00YjEwLTlmNjgtOGM4YTIyMzlkN2Iy"
 
 client = OneSignal(MY_APP_ID, MY_REST_API_KEY)
 
-ts = get_current_time()
-ts = ts.strftime("%H:%M")
+ts = get_current_time() + tsADDITION;
+ts = ts.strftime("%H:%M:%S")
+
+content={ }
+
+for arg in sys.argv[1:]:
+    lang,data = arg.split(":", 1)
+    content[lang] = data
+    
+print("Content: ")    
+print(content)    
 
 notification_to_all_users = SegmentNotification(
-    contents={
-        "en": "Hello from OneSignal-Notifications"
-    },
+    contents=content,
     delayed_option = "timezone",
     delivery_time_of_day = ts,
     included_segments=[SegmentNotification.ALL]
 )
-client.send(notification_to_all_users)
+
+#client.send(notification_to_all_users)
 
