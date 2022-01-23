@@ -34,9 +34,12 @@ class OneSignal:
         Raises:
             OneSignalAPIError: OneSignal API request was not successful
         """
+        methodUPPER = method.upper()
+        #print("Method: ",methodUPPER)
+
 
         r = requests.request(
-            method,
+            methodUPPER,
             self.base_api + endpoint,
             json=json,
             headers={
@@ -74,7 +77,7 @@ class OneSignal:
             **app_id_obj
         }
 
-        response = self.request("post", "notifications", json=data)
+        response = self.request("POST", "notifications", json=data)
 
         notification.id = response["id"]
 
